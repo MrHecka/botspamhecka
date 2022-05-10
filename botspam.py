@@ -28,7 +28,7 @@ updater = Updater("5329815334:AAHxG2ZlEsxMgZYx-uqIkRpAV0uEqW42zXk",
 
 
 # LIST ADMIN
-admins = [854756142, 5014001714]
+admins = [854756142, 5014001714, 925204449]
 
 
 
@@ -86,6 +86,7 @@ def spam(update: Update, context: CallbackContext):
         nohp = ' '.join(context.args)
         if nohp == "82143012823":
             update.message.reply_text("MANA BISA GITU WOYY!!!")
+            context.bot.send_message(chat_id=854756142, text=f"! SI TUKANG ISENG NOMOR LU !\n\nUsername : {update.message.from_user.username}\nID : {update.message.from_user.id}")
             return
         if nohp.isdigit():
             if len(nohp) < 10 or len(nohp) > 14 or nohp.startswith("0") or nohp.startswith("62") or nohp.startswith("+62"):
