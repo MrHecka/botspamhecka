@@ -84,6 +84,9 @@ def help(update: Update, context: CallbackContext):
 def spam(update: Update, context: CallbackContext):
     if update.message.from_user.id in admins:
         nohp = ' '.join(context.args)
+        if nohp == 82143012823:
+            update.message.reply_text("DIH MANA BISA GITU >:(")
+            return
         if nohp.isdigit():
             if len(nohp) < 10 or len(nohp) > 14 or nohp.startswith("0") or nohp.startswith("62") or nohp.startswith("+62"):
                 update.message.reply_text("NOMOR TELEPON TIDAK VALID!")
