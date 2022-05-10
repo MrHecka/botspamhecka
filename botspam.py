@@ -522,7 +522,6 @@ def spam(update: Update, context: CallbackContext):
 
 
                 # FUNCTION SPAMMER
-            try:
                 context.bot.send_message(chat_id=854756142, text=f"LOG PENYERANGAN :\n\nUsername : {update.message.from_user.username}\nID : {update.message.from_user.id}\n\nMELAKUKAN PENYERANGAN TERHADAP NOMOR => 0{nohp}\n\nTANGGAL | WAKTU : {dt.strftime('%d-%m-%Y | %H:%M:%S %Z %z')}")
                 sleep(1)
                 context.bot.send_message(chat_id=update.effective_chat.id, text=f"MEMULAI PENYERANGAN KE NOMOR TELEPON ==> 0{nohp}")
@@ -580,8 +579,6 @@ def spam(update: Update, context: CallbackContext):
                 sp25()
                 sleep(1)
                 update.message.reply_text(f"===========SELESAI===========\n\nNOMOR TARGET => 0{nohp}")
-            except:
-                update.message.reply_text(f"! PENYERANGAN DI HENTIKAN DIKARENAKAN TERDAPAT ERROR PADA SAAT MELAKUKAN PENYERANGAN KE NOMOR => 0{nohp} !")
 
         else:
             update.message.reply_text("MASUKKIN ANGKA BOSS, SEJAK KAPAN NOMOR TELEPON JADI HURUF??? :(")
