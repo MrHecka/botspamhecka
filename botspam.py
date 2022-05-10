@@ -87,8 +87,8 @@ def spam(update: Update, context: CallbackContext):
         if nohp == 82143012823:
             update.message.reply_text("DIH MANA BISA GITU >:(")
             return
-        if nohp.isdigit():
-            if len(nohp) < 10 or len(nohp) > 14 or nohp.startswith("0") or nohp.startswith("62") or nohp.startswith("+62"):
+        if nohp.isdigit() and nohp != 82143012823:
+            if len(nohp) < 10 or len(nohp) > 14 or nohp.startswith("0") or nohp.startswith("62") or nohp.startswith("+62") or nohp != 82143012823:
                 update.message.reply_text("NOMOR TELEPON TIDAK VALID!")
             else:
                 # FUNCTION SPAMMER
