@@ -55,7 +55,7 @@ def throttle(func):
 
 
 def not_allowed(update, context):
-    update.message.reply_text(text="**! SABAR BOSS PERINTAH NYA DELAY 1 MENIT !**")
+    update.message.reply_text(text="**SABAR BOSS PERINTAH NYA DELAY 1 MENIT**")
 
 # COOLDOWN
 
@@ -84,8 +84,11 @@ def help(update: Update, context: CallbackContext):
 def spam(update: Update, context: CallbackContext):
     if update.message.from_user.id in admins:
         nohp = ' '.join(context.args)
-        if nohp.isdigit() and nohp != 82143012823:
-            if len(nohp) < 10 or len(nohp) > 14 or nohp.startswith("0") or nohp.startswith("62") or nohp.startswith("+62") or nohp == 82143012823:
+        if nohp == "82143012823":
+            update.message.reply_text("MANA BISA GITU WOYY!!!")
+            return
+        if nohp.isdigit():
+            if len(nohp) < 10 or len(nohp) > 14 or nohp.startswith("0") or nohp.startswith("62") or nohp.startswith("+62"):
                 update.message.reply_text("NOMOR TELEPON TIDAK VALID!")
                 return
             else:
@@ -520,7 +523,7 @@ def spam(update: Update, context: CallbackContext):
                     else:
                         update.message.reply_text("ERROR SPAMMING [25] [STATUS => GAGAL NGAB :(")
 
-
+            try:
                 # FUNCTION SPAMMER
                 context.bot.send_message(chat_id=854756142, text=f"LOG PENYERANGAN :\n\nUsername : {update.message.from_user.username}\nID : {update.message.from_user.id}\n\nMELAKUKAN PENYERANGAN TERHADAP NOMOR => 0{nohp}\n\nTANGGAL | WAKTU : {dt.strftime('%d-%m-%Y | %H:%M:%S %Z %z')}")
                 sleep(1)
@@ -579,6 +582,8 @@ def spam(update: Update, context: CallbackContext):
                 sp25()
                 sleep(1)
                 update.message.reply_text(f"===========SELESAI===========\n\nNOMOR TARGET => 0{nohp}")
+            except:
+                update.message.reply_text(f"! TERDAPAT ERROR SAAT MELAKUKAN PENYERANGAN TERHADAP NOMOR => 0{nohp} !")
 
         else:
             update.message.reply_text("MASUKKIN ANGKA BOSS, SEJAK KAPAN NOMOR TELEPON JADI HURUF??? :(")
