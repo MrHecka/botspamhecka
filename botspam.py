@@ -18,7 +18,7 @@ import random
 import string
 import datetime
 import pytz
-ua = UserAgent()
+ua = UserAgent(verify_ssl=False, cache=False)
 
 # WAKTU INDONESIA (WIB)
 dt = datetime.datetime.now(pytz.timezone('Asia/Jakarta'))
@@ -64,11 +64,12 @@ def not_allowed(update, context):
 
 def start(update: Update, context: CallbackContext):
     if update.message.from_user.id in adminss:
-        print(adminss)
-        print(admins)
         update.message.reply_text(
             f"===SPAMMER BOT BY HECKA===\n\nHalooo Boss Selamat Datang ^_^\n\nUsername : {update.message.from_user.username}\nID : {update.message.from_user.id}")
     else:
+        print(adminss)
+        print(admins)
+        print(token_bots)
         update.message.reply_text("MAAF ANDA SIAPA YAA???")
         context.bot.send_message(chat_id=854756142, text=f"! ADA PENYUSUP !\n\nUsername : {update.message.from_user.username}\nID : {update.message.from_user.id}")
 
