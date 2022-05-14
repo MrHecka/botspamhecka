@@ -5,7 +5,7 @@ from telegram.ext.callbackcontext import CallbackContext
 from telegram.ext.commandhandler import CommandHandler
 from telegram.ext.messagehandler import MessageHandler
 from telegram.ext.filters import Filters
-from boto.s3.connection import S3Connection
+
 
 
 # SPAMMER BOT
@@ -23,13 +23,13 @@ ua = UserAgent()
 # WAKTU INDONESIA (WIB)
 dt = datetime.datetime.now(pytz.timezone('Asia/Jakarta'))
 
-token_bot = S3Connection(os.environ.get('token_bot'))
+token_bots = os.environ.get('token_bot')
   
-updater = Updater(token_bot, use_context=True)
+updater = Updater(token_bots, use_context=True)
 
 
 # LIST ADMIN & BOSS
-admins = S3Connection(os.environ.get['admins'])
+admins = os.environ.get('admins')
 adminss = admins.split(',')
 
 boss = 854756142
