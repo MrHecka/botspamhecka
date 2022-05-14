@@ -5,7 +5,7 @@ from telegram.ext.callbackcontext import CallbackContext
 from telegram.ext.commandhandler import CommandHandler
 from telegram.ext.messagehandler import MessageHandler
 from telegram.ext.filters import Filters
-from boto.s3.connection import S3Connection
+
 
 
 # SPAMMER BOT
@@ -29,7 +29,7 @@ updater = Updater(token_bott, use_context=True)
 
 
 # LIST ADMIN & BOSS
-admins = S3Connection(os.environ['admins'])
+admins = os.environ.get['admins']
 adminss = admins.split(',')
 
 boss = 854756142
@@ -98,8 +98,8 @@ def bc(update: Update, context: CallbackContext):
 def add(update: Update, context: CallbackContext):
     if update.message.from_user.id == boss:
         addtext = ' '.join(context.args)
-        adminlist = S3Connection(os.environ('admins'))
-        S3Connection(os.environ('admins', adminlist+","+addtext))
+        adminlist = os.environ.get('admins')
+        os.environ('admins', adminlist+","+addtext)
         context.bot.send_message(chat_id=854756142, text=f"! BERHASIL MENAMBAHKAN ID KE LIST ADMINS !\n\n{admins}")
     else:
         update.message.reply_text("LU SAHA WOYY??? GAADA IZIN WLEK")

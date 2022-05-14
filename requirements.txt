@@ -5,4 +5,3 @@ numpy
 python-telegram-bot
 datetime
 pytz
-boto
