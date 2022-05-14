@@ -29,9 +29,9 @@ updater = Updater(token_bott, use_context=True)
 
 
 # LIST ADMIN & BOSS
-admins = os.environ.get('admins')
+admins = os.environ.get('admins').split(',')
 adminss = admins.split(',')
-
+print(admins + "|||||" + adminss)
 boss = 854756142
 
 # COOLDOWN
