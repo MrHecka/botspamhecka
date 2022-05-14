@@ -64,6 +64,8 @@ def not_allowed(update, context):
 
 def start(update: Update, context: CallbackContext):
     if update.message.from_user.id in adminss:
+        print(adminss)
+        print(admins)
         update.message.reply_text(
             f"===SPAMMER BOT BY HECKA===\n\nHalooo Boss Selamat Datang ^_^\n\nUsername : {update.message.from_user.username}\nID : {update.message.from_user.id}")
     else:
