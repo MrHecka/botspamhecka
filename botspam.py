@@ -5,6 +5,8 @@ from telegram.ext.callbackcontext import CallbackContext
 from telegram.ext.commandhandler import CommandHandler
 from telegram.ext.messagehandler import MessageHandler
 from telegram.ext.filters import Filters
+from boto.s3.connection import S3Connection
+
 
 # SPAMMER BOT
 import os,sys,time,requests, json
@@ -21,14 +23,14 @@ ua = UserAgent()
 # WAKTU INDONESIA (WIB)
 dt = datetime.datetime.now(pytz.timezone('Asia/Jakarta'))
 
+token_bot = S3Connection(os.environ('token_bot'))
   
-updater = Updater("5329815334:AAHxG2ZlEsxMgZYx-uqIkRpAV0uEqW42zXk",
-                  use_context=True)
-  
+updater = Updater(token_bot, use_context=True)
 
 
 # LIST ADMIN & BOSS
-admins = [854756142, 5014001714, 925204449 ]
+admins = S3Connection(os.environ['admins'])
+adminss = admins.split(',')
 
 boss = 854756142
 
@@ -83,14 +85,25 @@ def help(update: Update, context: CallbackContext):
 def bc(update: Update, context: CallbackContext):
     if update.message.from_user.id == boss:
         bctext = ' '.join(context.args)
-        for x in range(len(admins)):
-            context.bot.send_message(chat_id=admins[x], text=f"! PESAN BROADCAST !\n\n{bctext}")
+        for x in range(len(adminss)):
+            context.bot.send_message(chat_id=adminss[x], text=f"! PESAN BROADCAST !\n\n{bctext}")
 
-        context.bot.send_message(chat_id=854756142, text=f"! BERHASIL KIRIM BROADCAST KE ID !\n\n{admins}")
+        context.bot.send_message(chat_id=854756142, text=f"! BERHASIL KIRIM BROADCAST KE ID !\n\n{adminss}")
     else:
         update.message.reply_text("LU SAHA WOYY??? GAADA IZIN WLEK")
         context.bot.send_message(chat_id=854756142, text=f"! ADA PENYUSUP BROADCAST !\n\nUsername : {update.message.from_user.username}\nID : {update.message.from_user.id}")
 
+
+
+def add(update: Update, context: CallbackContext):
+    if update.message.from_user.id == boss:
+        addtext = ' '.join(context.args)
+        adminlist = S3Connection(os.environ('admins'))
+        S3Connection(os.environ('admins', adminlist+","+addtext))
+        context.bot.send_message(chat_id=854756142, text=f"! BERHASIL MENAMBAHKAN ID KE LIST ADMINS !\n\n{admins}")
+    else:
+        update.message.reply_text("LU SAHA WOYY??? GAADA IZIN WLEK")
+        context.bot.send_message(chat_id=854756142, text=f"! ADA PENYUSUP ADD ADMINS !\n\nUsername : {update.message.from_user.username}\nID : {update.message.from_user.id}")
 
 
 
@@ -627,6 +640,7 @@ updater.dispatcher.add_handler(CommandHandler('start', start))
 updater.dispatcher.add_handler(CommandHandler('help', help))
 updater.dispatcher.add_handler(CommandHandler('spam', spam))
 updater.dispatcher.add_handler(CommandHandler('bc', bc))
+updater.dispatcher.add_handler(CommandHandler('add', add))
   
 
   
