@@ -23,9 +23,9 @@ ua = UserAgent()
 # WAKTU INDONESIA (WIB)
 dt = datetime.datetime.now(pytz.timezone('Asia/Jakarta'))
 
-token_bot = S3Connection(os.environ('token_bot'))
+token_bott = os.environ.get('token_bot')
   
-updater = Updater(token_bot, use_context=True)
+updater = Updater(token_bott, use_context=True)
 
 
 # LIST ADMIN & BOSS
