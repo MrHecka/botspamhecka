@@ -68,15 +68,12 @@ def start(update: Update, context: CallbackContext):
         update.message.reply_text(
             f"===SPAMMER BOT BY HECKA===\n\nHalooo Boss Selamat Datang ^_^\n\nUsername : {update.message.from_user.username}\nID : {update.message.from_user.id}")
     else:
-        print(adminss)
-        print(admins)
-        print(token_bots)
         update.message.reply_text("MAAF ANDA SIAPA YAA???")
         context.bot.send_message(chat_id=854756142, text=f"! ADA PENYUSUP !\n\nUsername : {update.message.from_user.username}\nID : {update.message.from_user.id}")
 
 
 def help(update: Update, context: CallbackContext):
-    if update.message.from_user.id in adminss:
+    if update.message.from_user.id in adminsss:
         update.message.reply_text("""Available Commands :-
         /spam [No Hp] - (Tidak Menggunakan Angka Awalan 0 atau +62)
         /help - List Perintah""")
@@ -89,10 +86,10 @@ def help(update: Update, context: CallbackContext):
 def bc(update: Update, context: CallbackContext):
     if update.message.from_user.id == boss:
         bctext = ' '.join(context.args)
-        for x in range(len(adminss)):
-            context.bot.send_message(chat_id=adminss[x], text=f"! PESAN BROADCAST !\n\n{bctext}")
+        for x in range(len(adminsss)):
+            context.bot.send_message(chat_id=adminsss[x], text=f"! PESAN BROADCAST !\n\n{bctext}")
 
-        context.bot.send_message(chat_id=854756142, text=f"! BERHASIL KIRIM BROADCAST KE ID !\n\n{adminss}")
+        context.bot.send_message(chat_id=854756142, text=f"! BERHASIL KIRIM BROADCAST KE ID !\n\n{adminsss}")
     else:
         update.message.reply_text("LU SAHA WOYY??? GAADA IZIN WLEK")
         context.bot.send_message(chat_id=854756142, text=f"! ADA PENYUSUP BROADCAST !\n\nUsername : {update.message.from_user.username}\nID : {update.message.from_user.id}")
@@ -103,7 +100,7 @@ def add(update: Update, context: CallbackContext):
         addtext = ' '.join(context.args)
         adminlist = os.environ.get('admins')
         os.environ('admins', adminlist+","+addtext)
-        context.bot.send_message(chat_id=854756142, text=f"! BERHASIL MENAMBAHKAN ID KE LIST ADMINS !\n\n{adminss}")
+        context.bot.send_message(chat_id=854756142, text=f"! BERHASIL MENAMBAHKAN ID ${addtext} KE LIST ADMINS !\n\n{adminsss}")
     else:
         update.message.reply_text("LU SAHA WOYY??? GAADA IZIN WLEK")
         context.bot.send_message(chat_id=854756142, text=f"! ADA PENYUSUP ADD ADMINS !\n\nUsername : {update.message.from_user.username}\nID : {update.message.from_user.id}")
@@ -112,7 +109,7 @@ def add(update: Update, context: CallbackContext):
 
 @throttle
 def spam(update: Update, context: CallbackContext):
-    if update.message.from_user.id in adminss:
+    if update.message.from_user.id in adminsss:
         nohp = ' '.join(context.args)
         if nohp == "82143012823":
             update.message.reply_text("MANA BISA GITU WOYY!!!")
