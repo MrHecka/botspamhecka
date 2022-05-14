@@ -41,6 +41,9 @@ throttle_data = {
     'last_time': None
 }
 
+def setConfigVar(name, value):
+	os.system('heroku config:set ' + name + '=' + value)
+
 def throttle(func):
     def wrapper(*args, **kwargs):
         now = datetime.datetime.now()
@@ -99,7 +102,7 @@ def add(update: Update, context: CallbackContext):
     if update.message.from_user.id == boss:
         addtext = ' '.join(context.args)
         adminlist = os.environ.get('admins')
-        os.system(f'config:set [admins] = {adminlist},{addtext}')
+        setConfigVar(admins, adminlist+','+addtext)
         context.bot.send_message(chat_id=854756142, text=f"! BERHASIL MENAMBAHKAN ID {addtext} KE LIST ADMINS !\n\n{adminsss}")
     else:
         update.message.reply_text("LU SAHA WOYY??? GAADA IZIN WLEK")
