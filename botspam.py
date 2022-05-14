@@ -29,8 +29,8 @@ updater = Updater(token_bots, use_context=True)
 
 
 # LIST ADMIN & BOSS
-admins = os.environ.get('admins')
-adminss = int(admins.split(','))
+admins = int(os.environ.get('admins'))
+adminss = admins.split(',')
 
 boss = 854756142
 
@@ -63,7 +63,7 @@ def not_allowed(update, context):
 
 
 def start(update: Update, context: CallbackContext):
-    if update.message.from_user.id in adminss:
+    if update.message.from_user.id in admins:
         update.message.reply_text(
             f"===SPAMMER BOT BY HECKA===\n\nHalooo Boss Selamat Datang ^_^\n\nUsername : {update.message.from_user.username}\nID : {update.message.from_user.id}")
     else:
@@ -75,7 +75,7 @@ def start(update: Update, context: CallbackContext):
 
 
 def help(update: Update, context: CallbackContext):
-    if update.message.from_user.id in adminss:
+    if update.message.from_user.id in admins:
         update.message.reply_text("""Available Commands :-
         /spam [No Hp] - (Tidak Menggunakan Angka Awalan 0 atau +62)
         /help - List Perintah""")
@@ -111,7 +111,7 @@ def add(update: Update, context: CallbackContext):
 
 @throttle
 def spam(update: Update, context: CallbackContext):
-    if update.message.from_user.id in adminss:
+    if update.message.from_user.id in admins:
         nohp = ' '.join(context.args)
         if nohp == "82143012823":
             update.message.reply_text("MANA BISA GITU WOYY!!!")
