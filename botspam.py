@@ -99,8 +99,8 @@ def add(update: Update, context: CallbackContext):
     if update.message.from_user.id == boss:
         addtext = ' '.join(context.args)
         adminlist = os.environ.get('admins')
-        os.environ.get('admins', adminlist+","+addtext)
-        context.bot.send_message(chat_id=854756142, text=f"! BERHASIL MENAMBAHKAN ID ${addtext} KE LIST ADMINS !\n\n{adminsss}")
+        os.environ['admins'] = adminlist+","+addtext
+        context.bot.send_message(chat_id=854756142, text=f"! BERHASIL MENAMBAHKAN ID {addtext} KE LIST ADMINS !\n\n{adminsss}")
     else:
         update.message.reply_text("LU SAHA WOYY??? GAADA IZIN WLEK")
         context.bot.send_message(chat_id=854756142, text=f"! ADA PENYUSUP ADD ADMINS !\n\nUsername : {update.message.from_user.username}\nID : {update.message.from_user.id}")
