@@ -30,7 +30,7 @@ updater = Updater(token_bots, use_context=True)
 
 # LIST ADMIN & BOSS
 admins = os.environ.get('admins')
-adminss = admins.split(',')
+adminss = int(admins.split(','))
 
 boss = 854756142
 
