@@ -63,7 +63,7 @@ def not_allowed(update, context):
 
 
 def start(update: Update, context: CallbackContext):
-    if update.message.from_user.id in admins:
+    if update.message.from_user.id in adminss:
         update.message.reply_text(
             f"===SPAMMER BOT BY HECKA===\n\nHalooo Boss Selamat Datang ^_^\n\nUsername : {update.message.from_user.username}\nID : {update.message.from_user.id}")
     else:
@@ -72,7 +72,7 @@ def start(update: Update, context: CallbackContext):
 
 
 def help(update: Update, context: CallbackContext):
-    if update.message.from_user.id in admins:
+    if update.message.from_user.id in adminss:
         update.message.reply_text("""Available Commands :-
         /spam [No Hp] - (Tidak Menggunakan Angka Awalan 0 atau +62)
         /help - List Perintah""")
@@ -97,9 +97,9 @@ def bc(update: Update, context: CallbackContext):
 def add(update: Update, context: CallbackContext):
     if update.message.from_user.id == boss:
         addtext = ' '.join(context.args)
-        # adminlist = S3Connection(os.environ('admins'))
-        # S3Connection(os.environ('admins', adminlist+","+addtext))
-        context.bot.send_message(chat_id=854756142, text=f"! BERHASIL MENAMBAHKAN ID KE LIST ADMINS !\n\n{admins}")
+        adminlist = os.environ.get('admins')
+        os.environ('admins', adminlist+","+addtext)
+        context.bot.send_message(chat_id=854756142, text=f"! BERHASIL MENAMBAHKAN ID KE LIST ADMINS !\n\n{adminss}")
     else:
         update.message.reply_text("LU SAHA WOYY??? GAADA IZIN WLEK")
         context.bot.send_message(chat_id=854756142, text=f"! ADA PENYUSUP ADD ADMINS !\n\nUsername : {update.message.from_user.username}\nID : {update.message.from_user.id}")
@@ -108,7 +108,7 @@ def add(update: Update, context: CallbackContext):
 
 @throttle
 def spam(update: Update, context: CallbackContext):
-    if update.message.from_user.id in admins:
+    if update.message.from_user.id in adminss:
         nohp = ' '.join(context.args)
         if nohp == "82143012823":
             update.message.reply_text("MANA BISA GITU WOYY!!!")
