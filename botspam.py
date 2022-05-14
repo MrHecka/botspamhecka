@@ -30,7 +30,7 @@ updater = Updater(token_bots, use_context=True)
 
 # LIST ADMIN & BOSS
 admins = os.environ.get('admins')
-adminss = admins.split(',').text()
+adminss = admins.split(',')
 
 boss = 854756142
 
@@ -63,7 +63,8 @@ def not_allowed(update, context):
 
 
 def start(update: Update, context: CallbackContext):
-    if update.message.from_user.id in adminss:
+    ID = update.message.from_user.id
+    if ID.toString() in adminss:
         update.message.reply_text(
             f"===SPAMMER BOT BY HECKA===\n\nHalooo Boss Selamat Datang ^_^\n\nUsername : {update.message.from_user.username}\nID : {update.message.from_user.id}")
     else:
