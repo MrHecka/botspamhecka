@@ -8,19 +8,6 @@ from telegram.ext.messagehandler import MessageHandler
 from telegram.ext.filters import Filters
 import mysql.connector
 
-# DATABASE KONEK
-mydb = mysql.connector.connect(
-  host="sql6.freemysqlhosting.net",
-  user="sql6492877",
-  password="uSIfTCnvKm",
-  port="3306",
-  database="sql6492877",
-  buffered=True
-)
-
-db = mydb.cursor()
-
-
 # SPAMMER BOT
 import os,sys,time,requests, json
 from numpy import require
@@ -33,22 +20,36 @@ import datetime
 import pytz
 ua = UserAgent(verify_ssl=False, cache=False)
 
+
+# DATABASE KONEK
+mydb = mysql.connector.connect(
+  host=os.environ.get('host'),
+  user=os.environ.get('user'),
+  password=os.environ.get('password'),
+  port=os.environ.get('port'),
+  database=os.environ.get('database'),
+  buffered=True
+)
+
+db = mydb.cursor()
+
+
+
 # WAKTU INDONESIA (WIB)
 dt = datetime.datetime.now(pytz.timezone('Asia/Jakarta'))
 
-# token_bots = os.environ.get('token_bot')
-token_bots = "5329815334:AAHxG2ZlEsxMgZYx-uqIkRpAV0uEqW42zXk"
+token_bots = os.environ.get('token_bot')
 
 updater = Updater(token_bots, use_context=True)
 
 
 # LIST ADMIN & BOSS
-# AMBIL SEMUA LIST ADMINS DATABASE MYSQL
+# [('Hecka', 854756142), ('Raka', 2147483647), ('Louis', 925204449), ('Putra', 949429221)]
 
 
 
 # BOSS
-boss = 854756142
+boss = os.environ.get('boss')
 
 # COOLDOWN
 throttle_data = {
@@ -97,11 +98,11 @@ def help(update: Update, context: CallbackContext):
     db.execute("SELECT id FROM user")
     iddb = db.fetchall()
     adminsss = [(x[0]) for x in iddb]
-    if update.message.from_user.id in adminsss:
+    if update.message.from_user.id == boss:
         update.message.reply_text("""Available Commands :-
         /spam [No Hp] - (Tidak Menggunakan Angka Awalan 0 atau +62)
         /help - List Perintah""")
-    elif update.message.from_user.id == boss:
+    elif update.message.from_user.id in adminsss:
         update.message.reply_text("""Available Commands :-
         /spam [No Hp] - Dipastikan Nomor Tidak Menggunakan Angka Awalan 0 atau +62
         /add [id] - Untuk Menambahkan Admin Ke Database!
