@@ -10,18 +10,6 @@ import mysql.connector
 from flask import Flask
 
 
-# LISTENING TO PORT HEROKU
-
-app = Flask(__name__)
-@app.route("/")
-def hello():
-    return "Halo Ngab Ada Apa Yaa??"
-
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)
-
-
 
 # SPAMMER BOT
 import os,sys,time,requests, json
@@ -34,6 +22,19 @@ import string
 import datetime
 import pytz
 ua = UserAgent(verify_ssl=False, cache=False)
+
+
+# LISTENING TO PORT HEROKU
+
+app = Flask(__name__)
+@app.route("/")
+def hello():
+    return "Halo Ngab Ada Apa Yaa??"
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
+
 
 
 # DATABASE KONEK
