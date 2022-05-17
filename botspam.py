@@ -1,11 +1,24 @@
 # TELEGRAM BOT
+from multiprocessing import context
 from telegram.ext.updater import Updater
 from telegram.update import Update
 from telegram.ext.callbackcontext import CallbackContext
 from telegram.ext.commandhandler import CommandHandler
 from telegram.ext.messagehandler import MessageHandler
 from telegram.ext.filters import Filters
+import mysql.connector
 
+# DATABASE KONEK
+mydb = mysql.connector.connect(
+  host="sql6.freemysqlhosting.net",
+  user="sql6492877",
+  password="uSIfTCnvKm",
+  port="3306",
+  database="sql6492877",
+  buffered=True
+)
+
+db = mydb.cursor()
 
 
 # SPAMMER BOT
@@ -23,16 +36,18 @@ ua = UserAgent(verify_ssl=False, cache=False)
 # WAKTU INDONESIA (WIB)
 dt = datetime.datetime.now(pytz.timezone('Asia/Jakarta'))
 
-token_bots = os.environ.get('token_bot')
-  
+# token_bots = os.environ.get('token_bot')
+token_bots = "5329815334:AAHxG2ZlEsxMgZYx-uqIkRpAV0uEqW42zXk"
+
 updater = Updater(token_bots, use_context=True)
 
 
 # LIST ADMIN & BOSS
-admins = os.environ.get('admins')
-adminss = admins.split(',')
-adminsss = [int (x) for x in adminss]
+# AMBIL SEMUA LIST ADMINS DATABASE MYSQL
 
+
+
+# BOSS
 boss = 854756142
 
 # COOLDOWN
@@ -67,18 +82,32 @@ def not_allowed(update, context):
 
 
 def start(update: Update, context: CallbackContext):
+    db.execute("SELECT id FROM user")
+    iddb = db.fetchall()
+    adminsss = [(x[0]) for x in iddb]
     if update.message.from_user.id in adminsss:
         update.message.reply_text(
             f"===SPAMMER BOT BY HECKA===\n\nHalooo Boss Selamat Datang ^_^\n\nUsername : {update.message.from_user.username}\nID : {update.message.from_user.id}")
     else:
-        update.message.reply_text("MAAF ANDA SIAPA YAA???")
+        update.message.reply_text(f"MAAF ANDA SIAPA YAA???\n\nID : {update.message.from_user.id}")
         context.bot.send_message(chat_id=854756142, text=f"! ADA PENYUSUP !\n\nUsername : {update.message.from_user.username}\nID : {update.message.from_user.id}")
 
 
 def help(update: Update, context: CallbackContext):
+    db.execute("SELECT id FROM user")
+    iddb = db.fetchall()
+    adminsss = [(x[0]) for x in iddb]
     if update.message.from_user.id in adminsss:
         update.message.reply_text("""Available Commands :-
         /spam [No Hp] - (Tidak Menggunakan Angka Awalan 0 atau +62)
+        /help - List Perintah""")
+    elif update.message.from_user.id == boss:
+        update.message.reply_text("""Available Commands :-
+        /spam [No Hp] - Dipastikan Nomor Tidak Menggunakan Angka Awalan 0 atau +62
+        /add [id] - Untuk Menambahkan Admin Ke Database!
+        /dels [id] - Untuk Menghapus Admin Dari Database!
+        /list - Untuk Mengecek List Admin Dari Database!
+        /bc - Untuk Broadcast Pesan Ke Semua Admin!
         /help - List Perintah""")
     else:
         update.message.reply_text("MAAF ANDA SIAPA YAA???")
@@ -88,30 +117,68 @@ def help(update: Update, context: CallbackContext):
 
 def bc(update: Update, context: CallbackContext):
     if update.message.from_user.id == boss:
+        db.execute("SELECT id FROM user")
+        iddb = db.fetchall()
+        adminsss = [(x[0]) for x in iddb]
+        mydb.commit()
         bctext = ' '.join(context.args)
         for x in range(len(adminsss)):
             context.bot.send_message(chat_id=adminsss[x], text=f"! PESAN BROADCAST !\n\n{bctext}")
 
-        context.bot.send_message(chat_id=854756142, text=f"! BERHASIL KIRIM BROADCAST KE ID !\n\n{adminsss}")
+        context.bot.send_message(chat_id=854756142, text=f"! BERHASIL KIRIM BROADCAST KE ID !\n\n{str(adminsss)}")
     else:
         update.message.reply_text("LU SAHA WOYY??? GAADA IZIN WLEK")
         context.bot.send_message(chat_id=854756142, text=f"! ADA PENYUSUP BROADCAST !\n\nUsername : {update.message.from_user.username}\nID : {update.message.from_user.id}")
 
 
-# def add(update: Update, context: CallbackContext):
-#     if update.message.from_user.id == boss:
-#         addtext = ' '.join(context.args)
-#         adminlist = os.environ.get('admins')
-#         setConfigVar(admins, adminlist+','+addtext)
-#         context.bot.send_message(chat_id=854756142, text=f"! BERHASIL MENAMBAHKAN ID {addtext} KE LIST ADMINS !\n\n{adminsss}")
-#     else:
-#         update.message.reply_text("LU SAHA WOYY??? GAADA IZIN WLEK")
-#         context.bot.send_message(chat_id=854756142, text=f"! ADA PENYUSUP ADD ADMINS !\n\nUsername : {update.message.from_user.username}\nID : {update.message.from_user.id}")
+def add(update: Update, context: CallbackContext):
+    if update.message.from_user.id == boss:
+        db.execute("SELECT id FROM user")
+        iddb = db.fetchall()
+        adminsss = [(x[0]) for x in iddb]
+        nama = ''.join(context.args[0])
+        id = ''.join(context.args[1])
+        sql = "INSERT INTO user (nama, id, sewa) VALUES (%s, %s, %s)"
+        val = (nama, id, "1")
+        mydb.commit()
+        db.execute(sql, val)
+        update.message.reply_text(f"{db.rowcount} ID {id} dengan nama {nama} telah ditambahkan ke database!")
+    else:
+        update.message.reply_text("LU SAHA WOYY??? GAADA IZIN WLEK")
+        context.bot.send_message(chat_id=854756142, text=f"! ADA PENYUSUP ADD ADMINS !\n\nUsername : {update.message.from_user.username}\nID : {update.message.from_user.id}")
+
+
+
+def dels(update: Update, context: CallbackContext):
+    if update.message.from_user.id == boss:
+        id = ''.join(context.args[0])
+        sql = f"DELETE FROM user WHERE id = '{id}'"
+        mydb.commit()
+        db.execute(sql)
+        update.message.reply_text(f"{db.rowcount} ID {id} telah dihapus dari database!")
+    else:
+        update.message.reply_text("LU SAHA WOYY??? GAADA IZIN WLEK")
+        context.bot.send_message(chat_id=854756142, text=f"! ADA PENYUSUP DELS ADMINS !\n\nUsername : {update.message.from_user.username}\nID : {update.message.from_user.id}")
+
+
+def list(update: Update, context: CallbackContext):
+    if update.message.from_user.id == boss:
+        db.execute("SELECT nama, id FROM user")
+        iddb = db.fetchall()
+        adminsss = [(x[0], x[1]) for x in iddb]
+        mydb.commit()
+        update.message.reply_text("LIST ADMINS :\n\n"+str(adminsss))
+    else:
+        update.message.reply_text("LU SAHA WOYY??? GAADA IZIN WLEK")
+        context.bot.send_message(chat_id=854756142, text=f"! ADA PENYUSUP LIST ADMINS !\n\nUsername : {update.message.from_user.username}\nID : {update.message.from_user.id}")
 
 
 
 @throttle
 def spam(update: Update, context: CallbackContext):
+    db.execute("SELECT id FROM user")
+    iddb = db.fetchall()
+    adminsss = [(x[0]) for x in iddb]
     if update.message.from_user.id in adminsss:
         nohp = ' '.join(context.args)
         if nohp == "82143012823":
@@ -643,13 +710,16 @@ updater.dispatcher.add_handler(CommandHandler('start', start))
 updater.dispatcher.add_handler(CommandHandler('help', help))
 updater.dispatcher.add_handler(CommandHandler('spam', spam))
 updater.dispatcher.add_handler(CommandHandler('bc', bc))
-# updater.dispatcher.add_handler(CommandHandler('add', add))
-  
+updater.dispatcher.add_handler(CommandHandler('add', add))
+updater.dispatcher.add_handler(CommandHandler('dels', dels))
+updater.dispatcher.add_handler(CommandHandler('list', list))
 
   
 
 
 print("BOT BERJALAN....")
 updater.start_polling()
+
+
 
 
