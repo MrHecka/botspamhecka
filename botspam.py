@@ -99,17 +99,17 @@ def help(update: Update, context: CallbackContext):
     iddb = db.fetchall()
     adminsss = [(x[0]) for x in iddb]
     if update.message.from_user.id == boss:
-        update.message.reply_text("""Available Commands :-
-        /spam [No Hp] - (Tidak Menggunakan Angka Awalan 0 atau +62)
-        /help - List Perintah""")
+        update.message.reply_text("""LIST PERINTAH :-\n
+/spam [No Hp] - Dipastikan Nomor Tidak Menggunakan Angka Awalan 0 atau +62
+/add [id] - Untuk Menambahkan Admin Ke Database!
+/dels [id] - Untuk Menghapus Admin Dari Database!
+/list - Untuk Mengecek List Admin Dari Database!
+/bc - Untuk Broadcast Pesan Ke Semua Admin!
+/help - List Perintah""")
     elif update.message.from_user.id in adminsss:
-        update.message.reply_text("""Available Commands :-
-        /spam [No Hp] - Dipastikan Nomor Tidak Menggunakan Angka Awalan 0 atau +62
-        /add [id] - Untuk Menambahkan Admin Ke Database!
-        /dels [id] - Untuk Menghapus Admin Dari Database!
-        /list - Untuk Mengecek List Admin Dari Database!
-        /bc - Untuk Broadcast Pesan Ke Semua Admin!
-        /help - List Perintah""")
+        update.message.reply_text("""LIST PERINTAH :-\n
+/spam [No Hp] - (Tidak Menggunakan Angka Awalan 0 atau +62)
+/help - List Perintah""")
     else:
         update.message.reply_text("MAAF ANDA SIAPA YAA???")
         context.bot.send_message(chat_id=854756142, text=f"! ADA PENYUSUP !\n\nUsername : {update.message.from_user.username}\nID : {update.message.from_user.id}")
