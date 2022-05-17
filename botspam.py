@@ -49,7 +49,7 @@ updater = Updater(token_bots, use_context=True)
 
 
 # BOSS
-boss = os.environ.get('boss')
+boss = int(os.environ.get('boss'))
 
 # COOLDOWN
 throttle_data = {
