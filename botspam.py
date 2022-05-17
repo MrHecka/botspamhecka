@@ -24,13 +24,6 @@ import pytz
 ua = UserAgent(verify_ssl=False, cache=False)
 
 
-# LISTENING TO PORT HEROKU
-
-app = Flask(__name__)
-@app.route("/")
-def hello():
-    return "Halo Ngab Ada Apa Yaa??"
-
 
 
 
@@ -733,6 +726,14 @@ updater.dispatcher.add_handler(CommandHandler('list', list))
 
 print("BOT BERJALAN....")
 updater.start_polling()
+
+# LISTENING TO PORT HEROKU
+
+app = Flask(__name__)
+@app.route("/")
+def hello():
+    return "Halo Ngab Ada Apa Yaa??"
+
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
