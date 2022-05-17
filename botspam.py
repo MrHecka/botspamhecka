@@ -8,11 +8,20 @@ from telegram.ext.messagehandler import MessageHandler
 from telegram.ext.filters import Filters
 import mysql.connector
 from flask import Flask
-app = Flask(__name__)
 
+
+# LISTENING TO PORT HEROKU
+
+app = Flask(__name__)
 @app.route("/")
 def hello():
     return "Halo Ngab Ada Apa Yaa??"
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
+
+
 
 # SPAMMER BOT
 import os,sys,time,requests, json
@@ -727,8 +736,6 @@ updater.dispatcher.add_handler(CommandHandler('list', list))
 print("BOT BERJALAN....")
 updater.start_polling()
 
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)
+
 
 
