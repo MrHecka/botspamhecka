@@ -7,7 +7,7 @@ from telegram.ext.commandhandler import CommandHandler
 from telegram.ext.messagehandler import MessageHandler
 from telegram.ext.filters import Filters
 import mysql.connector
-from flask import Flask
+# from flask import Flask
 
 
 
@@ -27,15 +27,15 @@ ua = UserAgent(verify_ssl=False, cache=False)
 
 # LISTENING TO PORT HEROKU
 
-app = Flask(__name__)
-@app.route("/")
-def hello():
-    return "Halo Ngab Ada Apa Yaa??"
+# app = Flask(__name__)
+# @app.route("/")
+# def hello():
+#     return "Halo Ngab Ada Apa Yaa??"
 
 
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)
+# if __name__ == "__main__":
+#     port = int(os.environ.get("PORT", 5000))
+#     app.run(host='0.0.0.0', port=port)
 
 
 
@@ -78,8 +78,6 @@ throttle_data = {
     'last_time': None
 }
 
-def setConfigVar(name, value):
-	os.system('heroku config:set ' + name + '=' + value)
 
 def throttle(func):
     def wrapper(*args, **kwargs):
