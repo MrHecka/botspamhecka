@@ -33,12 +33,6 @@ ua = UserAgent(verify_ssl=False, cache=False)
 #     return "Halo Ngab Ada Apa Yaa??"
 
 
-# if __name__ == "__main__":
-#     port = int(os.environ.get("PORT", 5000))
-#     app.run(host='0.0.0.0', port=port)
-
-
-
 
 
 
@@ -49,10 +43,10 @@ mydb = mysql.connector.connect(
   password=os.environ.get('password'),
   port=os.environ.get('port'),
   database=os.environ.get('database'),
-  buffered=True
 )
 
-db = mydb.cursor()
+
+
 
 
 
@@ -102,6 +96,7 @@ def not_allowed(update, context):
 
 
 def start(update: Update, context: CallbackContext):
+    db = mydb.cursor()
     db.execute("SELECT id FROM user")
     iddb = db.fetchall()
     adminsss = [(x[0]) for x in iddb]
@@ -114,9 +109,11 @@ def start(update: Update, context: CallbackContext):
 
 
 def help(update: Update, context: CallbackContext):
+    db = mydb.cursor()
     db.execute("SELECT id FROM user")
     iddb = db.fetchall()
     adminsss = [(x[0]) for x in iddb]
+    mydb.commit()
     if update.message.from_user.id == boss:
         update.message.reply_text("""LIST PERINTAH :-\n
 /spam [No Hp] - Dipastikan Nomor Tidak Menggunakan Angka Awalan 0 atau +62
@@ -136,6 +133,7 @@ def help(update: Update, context: CallbackContext):
 
 
 def bc(update: Update, context: CallbackContext):
+    db = mydb.cursor()
     if update.message.from_user.id == boss:
         db.execute("SELECT id FROM user")
         iddb = db.fetchall()
@@ -152,6 +150,7 @@ def bc(update: Update, context: CallbackContext):
 
 
 def add(update: Update, context: CallbackContext):
+    db = mydb.cursor()
     if update.message.from_user.id == boss:
         db.execute("SELECT id FROM user")
         iddb = db.fetchall()
@@ -170,6 +169,7 @@ def add(update: Update, context: CallbackContext):
 
 
 def dels(update: Update, context: CallbackContext):
+    db = mydb.cursor()
     if update.message.from_user.id == boss:
         id = ''.join(context.args[0])
         sql = f"DELETE FROM user WHERE id = '{id}'"
@@ -182,6 +182,7 @@ def dels(update: Update, context: CallbackContext):
 
 
 def list(update: Update, context: CallbackContext):
+    db = mydb.cursor()
     if update.message.from_user.id == boss:
         db.execute("SELECT nama, id FROM user")
         iddb = db.fetchall()
@@ -196,6 +197,7 @@ def list(update: Update, context: CallbackContext):
 
 @throttle
 def spam(update: Update, context: CallbackContext):
+    db = mydb.cursor()
     db.execute("SELECT id FROM user")
     iddb = db.fetchall()
     adminsss = [(x[0]) for x in iddb]
@@ -734,10 +736,23 @@ updater.dispatcher.add_handler(CommandHandler('add', add))
 updater.dispatcher.add_handler(CommandHandler('dels', dels))
 updater.dispatcher.add_handler(CommandHandler('list', list))
 
-  
+
+
 
 print("BOT BERJALAN....")
 updater.start_polling()
 
+# if __name__ == "__main__":
+#     port = int(os.environ.get("PORT", 5000))
+#     app.run(host='0.0.0.0', port=port)
 
+while True:
+    mydb = mysql.connector.connect(
+    host=os.environ.get('host'),
+    user=os.environ.get('user'),
+    password=os.environ.get('password'),
+    port=os.environ.get('port'),
+    database=os.environ.get('database'),
+    )
+    sleep(60)
 
